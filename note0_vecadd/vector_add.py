@@ -41,7 +41,9 @@ def vector_add_launcher(x, y):
     out = torch.empty_like(x)
     n_elements = x.numel()
     BLOCK_SIZE = 1024
-    grid = lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']),)#grid 
+    #grid = lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']),)#grid 
+    def grid(meta):
+        return (triton.cdiv(n_elements, meta['BLOCK_SIZE']),)
     vector_add_kernel[grid](x, y, out, n_elements, BLOCK_SIZE = BLOCK_SIZE)
     return out
 
